@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NEON DISTRICT CUTS — Level Up Your Look</title>
+<link rel="stylesheet" href="neon.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+
+<!-- SCANLINES OVERLAY -->
+<div class="scanlines"></div>
+<!-- CURSOR -->
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="cursor-dot" id="cursorDot"></div>
+
+<!-- BOOT SCREEN -->
+<div id="bootScreen">
+  <div class="boot-content">
+    <div class="boot-logo">NEON DISTRICT<br/><span>CUTS</span></div>
+    <div class="boot-bar-wrap"><div class="boot-bar" id="bootBar"></div></div>
+    <div class="boot-log" id="bootLog"></div>
+    <div class="boot-hint">[ PRESIONA CUALQUIER TECLA ]</div>
+  </div>
+</div>
+
+<!-- HUD TOP -->
+<div class="hud-top" id="hudTop">
+  <div class="hud-logo">⚡ NDC</div>
+  <div class="hud-nav">
+    <a href="#lobby" class="hud-link" data-sound="click">LOBBY</a>
+    <a href="#arsenal" class="hud-link" data-sound="click">ARSENAL</a>
+    <a href="#operatives" class="hud-link" data-sound="click">OPERATIVOS</a>
+    <a href="#mision" class="hud-link" data-sound="click">MISIÓN</a>
+    <a href="#intel" class="hud-link" data-sound="click">INTEL</a>
+  </div>
+  <div class="hud-player">
+    <div class="player-xp">
+      <span class="xp-label">XP</span>
+      <div class="xp-bar-track"><div class="xp-bar-fill" id="xpBarFill"></div></div>
+      <span class="xp-num" id="xpNum">0</span>
+    </div>
+    <div class="player-lvl">LVL <span id="playerLvl">1</span></div>
+    <div class="player-coins">⬡ <span id="playerCoins">500</span></div>
+    <button class="hud-cta" onclick="scrollToSection('mision')">BOOK MISSION</button>
+  </div>
+  <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+</div>
+<!-- MOBILE NAV -->
+<div class="mobile-nav" id="mobileNav">
+  <a href="#lobby" onclick="closeMobileNav()">LOBBY</a>
+  <a href="#arsenal" onclick="closeMobileNav()">ARSENAL</a>
+  <a href="#operatives" onclick="closeMobileNav()">OPERATIVOS</a>
+  <a href="#mision" onclick="closeMobileNav()">MISIÓN</a>
+  <a href="#intel" onclick="closeMobileNav()">INTEL</a>
+</div>
+
+<!-- NOTIFICATION TOASTS -->
+<div class="notif-stack" id="notifStack"></div>
+
+<!-- ==================== LOBBY / HERO ==================== -->
+<section class="section-hero" id="lobby">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-rain" id="heroRain"></div>
+
+  <div class="hero-left">
+    <div class="hero-badge blink-slow">● ONLINE — CALI SECTOR</div>
+    <h1 class="hero-title">
+      <span class="ht-line">NEON</span>
+      <span class="ht-line accent">DISTRICT</span>
+      <span class="ht-line">CUTS</span>
+    </h1>
+    <p class="hero-sub">La peluquería donde tu corte es una misión.<br/>Sube de nivel. Gana recompensas. Domina tu look.</p>
+    <div class="hero-stats-row">
+      <div class="hs"><span class="hs-n" data-target="2847">0</span><span class="hs-l">Clientes</span></div>
+      <div class="hs-sep">|</div>
+      <div class="hs"><span class="hs-n" data-target="98">0</span><span class="hs-l">% Satisfacción</span></div>
+      <div class="hs-sep">|</div>
+      <div class="hs"><span class="hs-n" data-target="9">0</span><span class="hs-l">Años</span></div>
+    </div>
+    <div class="hero-btns">
+      <button class="btn-neon" onclick="scrollToSection('mision')" data-sound="confirm">⚡ INICIAR MISIÓN</button>
+      <button class="btn-ghost-neon" onclick="openMiniGame()" data-sound="click">🎮 JUGAR AHORA</button>
+    </div>
+    <!-- Achievements row -->
+    <div class="achievements-row">
+      <div class="ach-chip locked" id="ach1" title="Completa tu primera cita">🏆 PRIMER CORTE</div>
+      <div class="ach-chip locked" id="ach2" title="Comparte en redes">📡 INFLUENCER</div>
+      <div class="ach-chip locked" id="ach3" title="Reserva 3 veces">👑 REGULAR</div>
+      <div class="ach-chip locked" id="ach4" title="Juega el minijuego">🎮 GAMER</div>
+      <div class="ach-chip locked" id="ach5" title="Deja una reseña">⭐ CRÍTICO</div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <!-- Animated character -->
+    <div class="char-display" id="charDisplay">
+      <svg viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg" class="char-svg" id="charSvg">
+        <!-- Glow base -->
+        <ellipse cx="150" cy="380" rx="80" ry="18" fill="#00fff2" opacity="0.12"/>
+        <!-- Body -->
+        <rect x="100" y="230" width="100" height="120" rx="10" fill="#0a0a1a" stroke="#00fff2" stroke-width="1.5"/>
+        <!-- Jacket detail -->
+        <path d="M100 230 L120 270 L150 250 L180 270 L200 230" fill="#111128" stroke="#00fff2" stroke-width="1"/>
+        <rect x="115" y="240" width="25" height="40" rx="3" fill="#00fff2" opacity="0.15"/>
+        <rect x="160" y="240" width="25" height="40" rx="3" fill="#00fff2" opacity="0.15"/>
+        <!-- Neon stripe on jacket -->
+        <line x1="150" y1="250" x2="150" y2="345" stroke="#f700ff" stroke-width="1.5" opacity="0.8"/>
+        <!-- Arms -->
+        <rect x="68" y="235" width="32" height="90" rx="10" fill="#0a0a1a" stroke="#00fff2" stroke-width="1"/>
+        <rect x="200" y="235" width="32" height="90" rx="10" fill="#0a0a1a" stroke="#00fff2" stroke-width="1"/>
+        <!-- Legs -->
+        <rect x="108" y="345" width="38" height="55" rx="6" fill="#050510" stroke="#00fff2" stroke-width="1"/>
+        <rect x="154" y="345" width="38" height="55" rx="6" fill="#050510" stroke="#00fff2" stroke-width="1"/>
+        <!-- Shoes -->
+        <rect x="102" y="392" width="48" height="14" rx="5" fill="#00fff2" opacity="0.8"/>
+        <rect x="148" y="392" width="48" height="14" rx="5" fill="#f700ff" opacity="0.8"/>
+        <!-- Neck -->
+        <rect x="135" y="195" width="30" height="40" rx="6" fill="#1a1030"/>
+        <!-- Head -->
+        <ellipse cx="150" cy="175" rx="52" ry="56" fill="#1a1030" stroke="#00fff2" stroke-width="1.5"/>
+        <!-- Eyes -->
+        <ellipse cx="133" cy="168" rx="10" ry="8" fill="#00fff2" opacity="0.9"/>
+        <ellipse cx="167" cy="168" rx="10" ry="8" fill="#00fff2" opacity="0.9"/>
+        <ellipse cx="133" cy="168" rx="5" ry="5" fill="#001a1a"/>
+        <ellipse cx="167" cy="168" rx="5" ry="5" fill="#001a1a"/>
+        <!-- Pupil glow -->
+        <circle cx="134" cy="167" r="2" fill="#00fff2"/>
+        <circle cx="168" cy="167" r="2" fill="#00fff2"/>
+        <!-- Nose -->
+        <path d="M147 178 L150 185 L153 178" fill="none" stroke="#00fff2" stroke-width="0.8" opacity="0.5"/>
+        <!-- Mouth -->
+        <path d="M138 194 Q150 200 162 194" fill="none" stroke="#00fff2" stroke-width="1.2" opacity="0.7"/>
+        <!-- HAIR — changes dynamically -->
+        <g id="charHair">
+          <path d="M98 160 C90 120 105 90 150 88 C195 90 210 120 202 160 C195 140 180 130 150 130 C120 130 105 140 98 160Z" fill="#00fff2" opacity="0.9"/>
+        </g>
+        <!-- Ear pieces / cyberpunk -->
+        <rect x="94" y="162" width="10" height="20" rx="3" fill="#f700ff" opacity="0.8"/>
+        <rect x="196" y="162" width="10" height="20" rx="3" fill="#00fff2" opacity="0.8"/>
+        <!-- Scar/detail -->
+        <line x1="165" y1="158" x2="172" y2="170" stroke="#f700ff" stroke-width="0.8" opacity="0.6"/>
+        <!-- Holographic tag -->
+        <rect x="200" y="235" width="60" height="26" rx="3" fill="#00fff2" opacity="0.1" stroke="#00fff2" stroke-width="0.5"/>
+        <text x="230" y="252" text-anchor="middle" font-family="Share Tech Mono" font-size="7" fill="#00fff2" opacity="0.8">NDC-7749</text>
+      </svg>
+      <!-- Level badge on character -->
+      <div class="char-level-badge">LVL <span id="charLvlBadge">1</span></div>
+
+      <!-- CUT COUNTER + SPIN WHEEL UNLOCK -->
+      <div class="cut-tracker">
+        <div class="ct-header">
+          <span class="ct-title">⚡ MISIONES COMPLETADAS</span>
+          <span class="ct-sub">5 cortes = RULETA DE DESCUENTO</span>
+        </div>
+        <!-- 5 pip slots -->
+        <div class="ct-pips" id="ctPips"></div>
+        <div class="ct-progress-label">
+          Faltan <strong id="ctLeft">5</strong> cortes para desbloquear la ruleta
+        </div>
+        <!-- Simular corte (demo) -->
+        <button class="sim-cut-btn" id="simCutBtn" onclick="simCut()">
+          ✂ SIMULAR CORTE <span class="sim-hint">(demo)</span>
+        </button>
+        <button class="spin-unlock-btn locked" id="spinUnlockBtn" onclick="openSpinWheel()" disabled>
+          <span id="spinBtnIcon">🔒</span> <span id="spinBtnLabel">RULETA BLOQUEADA</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SPIN WHEEL MODAL ===== -->
+  <div class="spin-overlay" id="spinOverlay">
+    <div class="spin-modal">
+      <div class="spin-header">
+        <span class="spin-title">⚡ RULETA NDC</span>
+        <button class="spin-close" onclick="closeSpinWheel()">✕</button>
+      </div>
+      <div class="spin-subtitle">Gira y gana tu descuento exclusivo</div>
+      <div class="spin-wheel-wrap">
+        <div class="spin-pointer">▼</div>
+        <canvas id="spinCanvas" width="320" height="320"></canvas>
+      </div>
+      <div class="spin-result" id="spinResult" style="display:none">
+        <div class="sr-label">¡GANASTE!</div>
+        <div class="sr-prize" id="srPrize"></div>
+        <div class="sr-code">Código: <strong id="srCode"></strong></div>
+        <div class="sr-note">Presenta este código en tu próxima visita ✦</div>
+      </div>
+      <button class="btn-neon spin-btn" id="spinBtn" onclick="spinWheel()">⚡ GIRAR RULETA</button>
+      <div class="spin-uses">Usos disponibles: <strong id="spinUsesLeft">1</strong></div>
+    </div>
+    <div class="spin-backdrop" onclick="closeSpinWheel()"></div>
+  </div>
+
+  <!-- Scroll hint -->
+  <div class="scroll-neon">SCROLL <i class="fas fa-chevron-down"></i></div>
+</section>
+
+<!-- ==================== ARSENAL / SERVICIOS ==================== -->
+<section class="section-dark" id="arsenal">
+  <div class="container">
+    <div class="sec-header">
+      <span class="sec-tag">// CATÁLOGO DE MISIONES</span>
+      <h2 class="sec-title">ARSENAL<span class="accent"> DE ESTILOS</span></h2>
+    </div>
+    <div class="arsenal-grid" id="arsenalGrid"></div>
+  </div>
+</section>
+
+<!-- LOYALTY PROGRAM STRIP -->
+<div class="loyalty-strip">
+  <div class="ls-content">
+    <div class="ls-title">⬡ SISTEMA DE LEALTAD NDC</div>
+    <div class="ls-tiers">
+      <div class="tier-item" id="tier0"><div class="tier-icon">🔩</div><div class="tier-name">RECRUIT</div><div class="tier-pts">0 XP</div></div>
+      <div class="tier-arrow">→</div>
+      <div class="tier-item" id="tier1"><div class="tier-icon">⚡</div><div class="tier-name">SOLDIER</div><div class="tier-pts">500 XP</div></div>
+      <div class="tier-arrow">→</div>
+      <div class="tier-item" id="tier2"><div class="tier-icon">🔥</div><div class="tier-name">VETERAN</div><div class="tier-pts">1500 XP</div></div>
+      <div class="tier-arrow">→</div>
+      <div class="tier-item" id="tier3"><div class="tier-icon">💀</div><div class="tier-name">LEGEND</div><div class="tier-pts">5000 XP</div></div>
+      <div class="tier-arrow">→</div>
+      <div class="tier-item" id="tier4"><div class="tier-icon">👑</div><div class="tier-name">GHOST</div><div class="tier-pts">10000 XP</div></div>
+    </div>
+    <div class="ls-reward">Tu nivel actual: <strong id="currentTierLabel">RECRUIT 🔩</strong> — Próximo beneficio al nivel 2: <strong>10% descuento</strong></div>
+  </div>
+</div>
+
+<!-- ==================== OPERATIVOS ==================== -->
+<section class="section-mid" id="operatives">
+  <div class="container">
+    <div class="sec-header">
+      <span class="sec-tag">// ESCUADRÓN ÉLITE</span>
+      <h2 class="sec-title">NUESTROS<span class="accent"> OPERATIVOS</span></h2>
+    </div>
+    <div class="ops-grid" id="opsGrid"></div>
+  </div>
+</section>
+
+<!-- ==================== MINIJUEGO ==================== -->
+<div class="minigame-overlay" id="miniGameOverlay">
+  <div class="mg-container">
+    <div class="mg-header">
+      <span class="mg-title">⚡ NDC ARCADE — CORTE VELOZ</span>
+      <button class="mg-close" onclick="closeMiniGame()">✕</button>
+    </div>
+    <div class="mg-instructions" id="mgInstructions">
+      <p>Haz clic en los clientes que aparecen antes de que se vayan.<br/>Cada corte exitoso = <strong>+50 XP</strong> y <strong>+25 ⬡ coins</strong></p>
+      <p style="margin-top:8px;font-size:0.8rem;opacity:0.7">¡Cuidado con los clientes enojados 😤 — te quitan puntos!</p>
+      <button class="btn-neon" onclick="startMiniGame()" data-sound="confirm">▶ COMENZAR</button>
+    </div>
+    <div class="mg-game" id="mgGame" style="display:none">
+      <div class="mg-hud">
+        <span>⏱ <strong id="mgTimer">30</strong>s</span>
+        <span>✂️ <strong id="mgScore">0</strong></span>
+        <span>💥 COMBO x<strong id="mgCombo">1</strong></span>
+        <span>❤️ <span id="mgLives">3</span></span>
+      </div>
+      <div class="mg-field" id="mgField"></div>
+    </div>
+    <div class="mg-result" id="mgResult" style="display:none">
+      <div class="mg-result-title">MISIÓN COMPLETADA</div>
+      <div class="mg-result-score">Score: <strong id="mgFinalScore">0</strong></div>
+      <div class="mg-result-reward">+<span id="mgXpReward">0</span> XP ganados</div>
+      <button class="btn-neon" onclick="startMiniGame()" data-sound="confirm">JUGAR DE NUEVO</button>
+      <button class="btn-ghost-neon" onclick="closeMiniGame()" style="margin-top:8px">SALIR</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== MISIÓN / CITA ==================== -->
+<section class="section-dark" id="mision">
+  <div class="container">
+    <div class="sec-header">
+      <span class="sec-tag">// PROTOCOLO DE RESERVA</span>
+      <h2 class="sec-title">BOOK<span class="accent"> MISSION</span></h2>
+    </div>
+    <div class="mission-layout">
+      <div class="mission-form">
+        <!-- Phase 1 -->
+        <div class="phase active" id="phase1">
+          <div class="phase-header"><span class="ph-num">01</span><span class="ph-title">SELECCIONA OPERATIVO</span></div>
+          <div class="op-select-grid" id="opSelectGrid"></div>
+        </div>
+        <!-- Phase 2 -->
+        <div class="phase" id="phase2">
+          <div class="phase-header"><span class="ph-num">02</span><span class="ph-title">ELIGE TU MISIÓN</span></div>
+          <div class="mission-service-grid" id="missionServiceGrid"></div>
+          <button class="back-btn" onclick="goPhase(1)">← BACK</button>
+        </div>
+        <!-- Phase 3 -->
+        <div class="phase" id="phase3">
+          <div class="phase-header"><span class="ph-num">03</span><span class="ph-title">FECHA Y HORA</span></div>
+          <input type="date" id="mDate" class="neon-input" style="margin-bottom:14px"/>
+          <div class="time-grid" id="timeGrid"><p class="hint-neon">Selecciona fecha para ver slots disponibles</p></div>
+          <button class="back-btn" onclick="goPhase(2)">← BACK</button>
+        </div>
+        <!-- Phase 4 -->
+        <div class="phase" id="phase4">
+          <div class="phase-header"><span class="ph-num">04</span><span class="ph-title">DATOS DEL AGENTE</span></div>
+          <div class="form-grid-neon">
+            <input type="text" id="mName" placeholder="NOMBRE COMPLETO" class="neon-input"/>
+            <input type="tel" id="mPhone" placeholder="TELÉFONO / WHATSAPP" class="neon-input"/>
+            <input type="email" id="mEmail" placeholder="CORREO ELECTRÓNICO" class="neon-input"/>
+            <select id="mSource" class="neon-input">
+              <option value="">¿CÓMO NOS ENCONTRASTE?</option>
+              <option>Instagram</option><option>TikTok</option><option>Google</option>
+              <option>Un amigo</option><option>Pasé por aquí</option>
+            </select>
+            <textarea id="mNote" placeholder="INSTRUCCIONES ESPECIALES..." class="neon-input" rows="2" style="grid-column:1/-1"></textarea>
+          </div>
+
+          <!-- PAYMENT METHOD -->
+          <div class="pay-section">
+            <div class="pay-label">// MÉTODO DE PAGO</div>
+            <div class="pay-grid">
+
+              <button class="pay-card" id="pay-cash" onclick="selectPay('cash',this)">
+                <div class="pay-icon">💵</div>
+                <div class="pay-name">EFECTIVO</div>
+                <div class="pay-desc">Paga al llegar al estudio</div>
+              </button>
+
+              <button class="pay-card" id="pay-nequi" onclick="selectPay('nequi',this)">
+                <div class="pay-icon">
+                  <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="32" height="32" rx="8" fill="#6C0CE0"/>
+                    <text x="16" y="22" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="10" font-weight="900" fill="white">N</text>
+                  </svg>
+                </div>
+                <div class="pay-name">NEQUI</div>
+                <div class="pay-desc">Transfiere antes de llegar</div>
+                <div class="pay-nequi-num" id="nequiNum" style="display:none">
+                  <span class="pay-nequi-label">Número Nequi:</span>
+                  <span class="pay-nequi-val">315 678 9012</span>
+                  <button class="pay-copy-btn" onclick="copyNequi(event)">⎘ COPIAR</button>
+                </div>
+              </button>
+
+              <button class="pay-card" id="pay-daviplata" onclick="selectPay('daviplata',this)">
+                <div class="pay-icon">
+                  <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="32" height="32" rx="8" fill="#E30613"/>
+                    <text x="16" y="22" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="9" font-weight="900" fill="white">DV</text>
+                  </svg>
+                </div>
+                <div class="pay-name">DAVIPLATA</div>
+                <div class="pay-desc">Transferencia rápida</div>
+                <div class="pay-nequi-num" id="daviNum" style="display:none">
+                  <span class="pay-nequi-label">Número Daviplata:</span>
+                  <span class="pay-nequi-val">315 678 9012</span>
+                  <button class="pay-copy-btn" onclick="copyDavi(event)">⎘ COPIAR</button>
+                </div>
+              </button>
+
+              <button class="pay-card" id="pay-transfer" onclick="selectPay('transfer',this)">
+                <div class="pay-icon">🏦</div>
+                <div class="pay-name">TRANSFERENCIA</div>
+                <div class="pay-desc">PSE / Bancolombia</div>
+              </button>
+
+            </div>
+            <div class="pay-selected-msg" id="payMsg"></div>
+          </div>
+
+          <button class="btn-neon full-neon" onclick="confirmMission()">⚡ CONFIRMAR MISIÓN</button>
+          <button class="back-btn" onclick="goPhase(3)">← BACK</button>
+        </div>
+      </div>
+
+      <!-- Terminal / summary -->
+      <div class="terminal">
+        <div class="terminal-bar">
+          <span class="tb-dot red"></span><span class="tb-dot yellow"></span><span class="tb-dot green"></span>
+          <span class="tb-title">NDC_TERMINAL v2.4</span>
+        </div>
+        <div class="terminal-body" id="terminalBody">
+          <div class="term-line"><span class="term-prompt">$</span> SISTEMA LISTO...</div>
+          <div class="term-line"><span class="term-prompt">$</span> Esperando selección de operativo_</div>
+        </div>
+        <div class="term-mission-card" id="termMissionCard">
+          <div class="tmc-row"><span>OPERATIVO:</span><strong id="tm-op">—</strong></div>
+          <div class="tmc-row"><span>MISIÓN:</span><strong id="tm-svc">—</strong></div>
+          <div class="tmc-row"><span>COSTO:</span><strong id="tm-price">—</strong></div>
+          <div class="tmc-row"><span>DURACIÓN:</span><strong id="tm-dur">—</strong></div>
+          <div class="tmc-row"><span>FECHA:</span><strong id="tm-date">—</strong></div>
+          <div class="tmc-row"><span>HORA:</span><strong id="tm-time">—</strong></div>
+          <div class="tmc-row"><span>PAGO:</span><strong id="tm-pay">—</strong></div>
+          <div class="tmc-xp">+<span id="tm-xp">0</span> XP al completar</div>
+        </div>
+        <div class="terminal-horario">
+          <div class="th-title">// HORARIO DEL SECTOR</div>
+          <div class="th-row"><span>LUN–VIE</span><span class="accent">08:00 — 20:00</span></div>
+          <div class="th-row"><span>SÁBADO</span><span class="accent">08:00 — 18:00</span></div>
+          <div class="th-row"><span>DOMINGO</span><span class="accent">09:00 — 14:00</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MISSION CONFIRM MODAL -->
+<div class="mission-modal" id="missionModal">
+  <div class="mm-box">
+    <div class="mm-scanline"></div>
+    <div class="mm-icon">⚡</div>
+    <div class="mm-title">MISIÓN ACEPTADA</div>
+    <div class="mm-subtitle">AGENTE REGISTRADO EN EL SISTEMA</div>
+    <div class="mm-body" id="mmBody"></div>
+    <div class="mm-xp-gain"><span id="mmXpGain">+250</span> XP DESBLOQUEADOS</div>
+    <button class="btn-neon" onclick="closeMissionModal()">⚡ ROGER THAT</button>
+  </div>
+  <div class="mm-backdrop" onclick="closeMissionModal()"></div>
+</div>
+
+<!-- ==================== INTEL ==================== -->
+<section class="section-mid" id="intel">
+  <div class="container">
+    <div class="sec-header">
+      <span class="sec-tag">// INTELIGENCIA DEL SECTOR</span>
+      <h2 class="sec-title">INTEL &<span class="accent"> UBICACIÓN</span></h2>
+    </div>
+    <div class="intel-layout">
+      <div class="intel-left">
+        <div class="intel-card"><i class="fas fa-map-marker-alt accent-icon"></i><div><strong>BASE DE OPERACIONES</strong><p>Calle 25N #8-15, Versalles,<br/>Cali, Valle del Cauca</p></div></div>
+        <div class="intel-card"><i class="fas fa-phone accent-icon"></i><div><strong>COMUNICACIONES</strong><p>+57 315 678 9012</p></div></div>
+        <div class="intel-card"><i class="fab fa-instagram accent-icon"></i><div><strong>RED SOCIAL</strong><p>@neondistrictcuts</p></div></div>
+        <div class="intel-card"><i class="fab fa-whatsapp accent-icon"></i><div><strong>LÍNEA DIRECTA</strong><p>+57 315 678 9012</p></div></div>
+        <!-- Founders -->
+        <div class="founders-panel">
+          <div class="fp-title">// COMANDANTES</div>
+          <div class="founder-row">
+            <div class="fr-avatar" style="border-color:#00fff2">JJ</div>
+            <div><strong>Jhon Jairo Parra</strong><br/><span>Founder & Lead Operative</span></div>
+          </div>
+          <div class="founder-row">
+            <div class="fr-avatar" style="border-color:#f700ff">SB</div>
+            <div><strong>Sebastián Banguera</strong><br/><span>Co-Founder & Style Director</span></div>
+          </div>
+        </div>
+        <a class="btn-neon" href="https://www.google.com/maps/dir/?api=1&destination=Calle+25N+8-15+Cali" target="_blank"><i class="fas fa-route"></i> NAVEGAR AL SECTOR</a>
+      </div>
+      <div class="intel-right">
+        <div class="map-neon">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d127500!2d-76.5225!3d3.4516!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e30a6f0cc4bb3f1%3A0x1f0fb5e952ae6168!2sCali%2C%20Valle%20del%20Cauca!5e0!3m2!1ses!2sco!4v1680000000000"
+            width="100%" height="100%" style="border:0;" allowfullscreen loading="lazy"></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer-neon">
+  <div class="fn-inner">
+    <div class="fn-logo">⚡ NEON DISTRICT CUTS</div>
+    <p class="fn-sub">Level up your look. Cali, Colombia. Est. 2015.</p>
+    <div class="fn-social">
+      <a href="#"><i class="fab fa-instagram"></i></a>
+      <a href="#"><i class="fab fa-tiktok"></i></a>
+      <a href="#"><i class="fab fa-facebook"></i></a>
+      <a href="#"><i class="fab fa-whatsapp"></i></a>
+      <a href="#"><i class="fab fa-youtube"></i></a>
+    </div>
+    <div class="fn-bottom">© 2024 NDC SYSTEM — ALL RIGHTS RESERVED // CALI SECTOR // v2.4.1</div>
+  </div>
+</footer>
+
+<script src="neon.js"></script>
+</body>
+</html>
